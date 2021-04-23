@@ -7,7 +7,9 @@ use App\Models\User;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Validator;
-
+use Hash;
+use App\Events\shouldSendEmail;
+use App\Mail\RegistrationEmail;
 class RegistrationController extends Controller
 {
     /**
@@ -36,7 +38,8 @@ class RegistrationController extends Controller
 
         $v = Validator::make($inputs, [
             'name' => 'required|max:255|min:4',
-            'user_name' => 'required|max:20|min:4',
+            'user_name' => 'required|max:20|min:4|unique:users',
+            'email' => 'sometimes|required|email|unique:users',
         ]);
 
         if($v->fails())
@@ -44,8 +47,18 @@ class RegistrationController extends Controller
             return response()->json($v->errors(), 422);
         }
 
-
+        $userDetails->password = Hash::make($userDetails->password);
+        $userDetails->secret = rand(100000,999999);
         if ($userDetails->save()){
+
+            try{
+                $email = new RegistrationEmail($userDetails);
+                event(new shouldSendEmail($email->build()));
+            }
+            catch(Exception $e){
+                return $e->getMessage();
+            }
+            //shouldSendEmail::dispatch($email->build());
             return [
                 'success'=> true,
                 'status'=> 'Successfully Saved'
@@ -61,7 +74,7 @@ class RegistrationController extends Controller
      */
     public function show($id)
     {
-        //
+        return [];
     }
 
     /**

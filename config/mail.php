@@ -12,7 +12,7 @@ return [
     | and used as needed; however, this mailer will be used by default.
     |
     */
-
+    'driver' => env('MAIL_DRIVER', 'sendgrid'),
     'default' => env('MAIL_MAILER', 'smtp'),
 
     /*
@@ -43,6 +43,10 @@ return [
             'password' => env('MAIL_PASSWORD'),
             'timeout' => null,
             'auth_mode' => null,
+        ],
+
+        'sendgrid' => [
+            'transport' => 'sendgrid',
         ],
 
         'ses' => [

@@ -30,4 +30,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'sendgrid' => [
+        'api_key' => env('SENDGRID_API_KEY'),
+        'template_id' => 'd-d70fd3fa29ea4d42bde7542afafd978c',
+    ],
+
+
 ];

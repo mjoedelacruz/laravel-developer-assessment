@@ -12,6 +12,7 @@
         "laravel/framework": "^8.12",
         "laravel/passport": "^10.1",
         "laravel/tinker": "^2.5",
+        "s-ichikawa/laravel-sendgrid-driver": "^3.0",
         "sendgrid/sendgrid": "~7",
         "spatie/laravel-permission": "^4.0"
     },
