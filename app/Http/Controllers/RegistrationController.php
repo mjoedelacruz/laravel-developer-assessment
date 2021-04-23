@@ -40,6 +40,7 @@ class RegistrationController extends Controller
             'name' => 'required|max:255|min:4',
             'user_name' => 'required|max:20|min:4|unique:users',
             'email' => 'sometimes|required|email|unique:users',
+            //'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:width=256px,height=256px',
         ]);
 
         if($v->fails())
@@ -47,8 +48,10 @@ class RegistrationController extends Controller
             return response()->json($v->errors(), 422);
         }
 
+        $secret = rand(100000,999999);
         $userDetails->password = Hash::make($userDetails->password);
-        $userDetails->secret = rand(100000,999999);
+        $userDetails->secret = $secret;
+
         if ($userDetails->save()){
 
             try{

@@ -8,6 +8,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Sichikawa\LaravelSendgridDriver\SendGrid;
 use Sichikawa\LaravelSendgridDriver\Transport\SendgridTransport;
+use Hash;
 
 class RegistrationEmail extends Mailable
 {
@@ -22,6 +23,7 @@ class RegistrationEmail extends Mailable
 
     public function build()
     {
+
         $from = "mjoedelacruz@gmail.com";
         $from_name = "Michael Joe Dela Cruz";
         $address = $this->data->email;
@@ -30,7 +32,9 @@ class RegistrationEmail extends Mailable
         $body = 'This is your 6 pin code';
         $name = $this->data->name;
         $pin = $this->data->secret;
-
+        $token = Hash::make($pin);
+        $secret_pin= `http://127.0.0.1:8000/api/verify/{$token}`;
+        $token = $this->data->token_link;
         return $this->view('templates.registration')
                     ->to($address,$name)
                     ->from($from, $from_name)
@@ -43,6 +47,7 @@ class RegistrationEmail extends Mailable
                         'personalizations' => [
                             [
                                 'dynamic_template_data' => [
+                                    'token' => $secret_pin,
                                     'code' => $pin,
                                     'name' => $name,
                                     'subject' => $subject,
