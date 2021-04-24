@@ -32,7 +32,6 @@ class RegistrationController extends Controller
     {
         $inputs = $request->all();
         $userDetails = User::make($inputs);
-        //$image_path = "C:\Users\Kaji Lao\Pictures";
         // $role = Role::create(['name' => 'writer']);
         // $permission = Permission::create(['name' => 'edit articles']);
 

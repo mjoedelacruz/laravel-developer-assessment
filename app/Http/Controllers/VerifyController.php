@@ -32,7 +32,7 @@ class VerifyController extends Controller
 
 
         if(!$pin){
-            return [ "status" => "Error", "message" =>"Invalid Pin"];
+            return [ "status" => "Error", "message" =>"Invalid Pin."];
         }
         $user =  User::where(['secret'=>$pin , 'user_name' => $user])->first();
         //dd($user);
@@ -40,11 +40,11 @@ class VerifyController extends Controller
             return [ "status" => "Error", "message" =>"Pin does not match."];
         }
         else if($userDetails->email_verified_at !== null){
-            return [ "status" => "Error", "message" =>"Already authenticated."];
+            return [ "status" => "Invalid", "message" =>"Already authenticated."];
         }
         $userDetails->email_verified_at = date('Y-m-d H:i:s');
         $userDetails->save();
-        return [ "status" => "Success", "message" =>"Pin Verified"];
+        return [ "status" => "Success", "message" =>"Pin Verified."];
 
 
     }
