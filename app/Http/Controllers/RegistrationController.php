@@ -41,7 +41,10 @@ class RegistrationController extends Controller
             'user_name' => 'required|max:20|min:4|unique:users',
             'email' => 'sometimes|required|email|unique:users',
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:width=256,height=256',
-        ]);
+        ],
+        [
+            'avatar.dimensions'=> 'Your image should be 256 by 256 pixels', // custom message
+            ]);
 
         if($v->fails())
         {
