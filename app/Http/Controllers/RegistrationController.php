@@ -32,14 +32,15 @@ class RegistrationController extends Controller
     {
         $inputs = $request->all();
         $userDetails = User::make($inputs);
-        // $role = Role::create(['name' => 'writer']);
-        // $permission = Permission::create(['name' => 'edit articles']);
+
+
 
         $v = Validator::make($inputs, [
             'name' => 'required|max:255|min:4',
             'user_name' => 'required|max:20|min:4|unique:users',
             'email' => 'sometimes|required|email|unique:users',
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:width=256,height=256',
+            'roles' => 'required|max:255|min:4'
         ],
         [
             'avatar.dimensions'=> 'Your image should be 256 by 256 pixels', // custom message
@@ -55,8 +56,13 @@ class RegistrationController extends Controller
         $userDetails->secret = $secret;
 
         if ($userDetails->save()){
-
             try{
+                $role = $userDetails->addRole();
+                $permission = $userDetails->addPermission();
+                $role->givePermissionTo($permission);
+
+                $userDetails->assignRole($request->input('roles'));
+
                 $email = new RegistrationEmail($userDetails);
                 event(new shouldSendEmail($email->build()));
             }
@@ -64,6 +70,7 @@ class RegistrationController extends Controller
                 return $e->getMessage();
             }
             //shouldSendEmail::dispatch($email->build());
+
             return [
                 'success'=> true,
                 'status'=> 'Successfully Saved'

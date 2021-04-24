@@ -43,6 +43,7 @@ class VerifyController extends Controller
             return [ "status" => "Invalid", "message" =>"Already authenticated."];
         }
         $userDetails->email_verified_at = date('Y-m-d H:i:s');
+        $userDetails->registered_at = date('Y-m-d H:i:s');
         $userDetails->save();
         return [ "status" => "Success", "message" =>"Pin Verified."];
 

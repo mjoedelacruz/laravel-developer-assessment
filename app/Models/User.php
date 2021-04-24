@@ -29,7 +29,6 @@ class User extends Authenticatable
         'registered_at',
     ];
 
-
     /**
      * The attributes that should be hidden for arrays.
      *
@@ -48,4 +47,12 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function addRole(){
+        return Role::create(['name' => 'writer']);
+    }
+
+    public function addPermission(){
+        return Permission::create(['name' => 'write articles']);
+    }
 }
