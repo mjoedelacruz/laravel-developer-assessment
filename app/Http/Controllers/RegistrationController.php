@@ -32,7 +32,7 @@ class RegistrationController extends Controller
     {
         $inputs = $request->all();
         $userDetails = User::make($inputs);
-
+        //$image_path = "C:\Users\Kaji Lao\Pictures";
         // $role = Role::create(['name' => 'writer']);
         // $permission = Permission::create(['name' => 'edit articles']);
 
@@ -40,7 +40,7 @@ class RegistrationController extends Controller
             'name' => 'required|max:255|min:4',
             'user_name' => 'required|max:20|min:4|unique:users',
             'email' => 'sometimes|required|email|unique:users',
-            //'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:width=256px,height=256px',
+            'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048|dimensions:width=256,height=256',
         ]);
 
         if($v->fails())

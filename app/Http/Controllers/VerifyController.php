@@ -25,9 +25,10 @@ class VerifyController extends Controller
      */
     public function store(Request $request)
     {
+
         $pin = $request->input('secret');
         $user = $request->input('user_name');
-
+        $userDetails = User::where('user_name',$user)->first();
 
 
         if(!$pin){
@@ -38,7 +39,11 @@ class VerifyController extends Controller
         if(!$user){
             return [ "status" => "Error", "message" =>"Pin does not match."];
         }
-
+        else if($userDetails->email_verified_at !== null){
+            return [ "status" => "Error", "message" =>"Already authenticated."];
+        }
+        $userDetails->email_verified_at = date('Y-m-d H:i:s');
+        $userDetails->save();
         return [ "status" => "Success", "message" =>"Pin Verified"];
 
 

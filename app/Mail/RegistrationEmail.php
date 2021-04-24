@@ -42,7 +42,9 @@ class RegistrationEmail extends Mailable
                     ->subject($subject)
                     ->with([
                         'body_message' => $body,
-                        'test_message' => $this->data->secret])
+                        'test_message' => $this->data->secret,
+                        'token' => $secret_pin,
+                        ])
                     ->sendGrid([
                         'personalizations' => [
                             [
